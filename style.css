@@ -1,0 +1,21 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: #292929;
+}
+
+#canvas1 {
+    border: 1px solid black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #4d79bc;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#background1, #background2, #background3, #background4, #playerShip1, #playerShip2, #playerShip3, #playerShip4, #enemy1, #enemy2, #enemy3, #enemy4 {
+    display: none;
+}
