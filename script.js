@@ -316,17 +316,10 @@ window.addEventListener('load', function(){
             context.shadowOffsetX = 2;
             context.shadowOffsetY = 2;
             context.shadowColor = 'black';
-            context.font = this.fontSize + 'px ' + this.fontFamily;
-            // Change displat color when it's powerup
-            if(this.game.player.powerUp){
-                context.fillStyle = '#DE532B';
-            }
+            context.font = this.fontSize + 'px ' + this.fontFamily;            
             // Display score
             context.fillText('Score: ' + this.game.score, 20, 40);
-            // Display ammo            
-            for(let i = 0; i< this.game.ammo; i++){
-                context.fillRect(20 + 5 * i, 50, 3, 20)
-            }
+            
             // Display game timer
             context.fillText('Timer: ' + (this.game.gameTime * 0.001).toFixed(1), 20, 100);
             // Game Win/Over
@@ -345,6 +338,14 @@ window.addEventListener('load', function(){
                 context.fillText(message1, this.game.width * 0.5, this.game.height * 0.5 - 20);
                 context.font = '25px '+ this.fontFamily;
                 context.fillText(message2, this.game.width * 0.5, this.game.height * 0.5 + 20);
+            }
+            // Change display color when it's powerup
+            if(this.game.player.powerUp){
+                context.fillStyle = '#FFCC00';
+            }
+            // Display ammo            
+            for(let i = 0; i< this.game.ammo; i++){
+                context.fillRect(20 + 5 * i, 50, 3, 20)
             }
 
             context.restore();
