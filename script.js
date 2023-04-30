@@ -174,16 +174,42 @@ window.addEventListener('load', function(){
         }
     }
     
-    class MeteorBrown1 extends Enemy { // MeteorBrown1
+    class MeteorBrown1 extends Enemy { // Big brown meteor
         constructor(game){
             super(game);
             this.width = 89;
             this.height = 82;
-            this.lives = 15;
+            this.lives = 10;
             this.score = 17;
             this.image = document.getElementById('meteorBrown1');
             this.y = Math.random() * (this.game.height - this.height);   
             this.type = 'meteorBrown1';         
+        }
+    }
+    
+    class MeteorBrown2 extends Enemy { // little brown meteor
+        constructor(game){
+            super(game);
+            this.width = 29;
+            this.height = 26;
+            this.lives = 5;
+            this.score = 15;
+            this.image = document.getElementById('meteorBrown2');
+            this.y = Math.random() * (this.game.height - this.height);   
+            this.type = 'meteorBrown2';         
+        }
+    }
+    
+    class MeteorGrey1 extends Enemy { // small grey meteor
+        constructor(game){
+            super(game);
+            this.width = 45;
+            this.height = 40;
+            this.lives = 9;
+            this.score = 13;
+            this.image = document.getElementById('meteorGrey1');
+            this.y = Math.random() * (this.game.height - this.height);   
+            this.type = 'meteorGrey1';         
         }
     }
 
@@ -291,10 +317,10 @@ window.addEventListener('load', function(){
             this.ammoInterval = 350; // 0.35 Sec
             this.gameOver = false;
             this.score = 0;
-            this.winningScore = 20; // Winning score
+            this.winningScore = 2000; // Winning score
             this.gameTime = 0;
-            this.timeLimit = 30000; // Game time limit => 10 Sec
-            this.speed = 1; // Game speed
+            this.timeLimit = 300000; // Game time limit => 30 Sec
+            this.speed = 3; // Game speed
             this.debug = false; // Debug mode
         }
         update(deltaTime){
@@ -355,11 +381,15 @@ window.addEventListener('load', function(){
         }
         addEnemy(){
             const randomize = Math.random();
-            if(randomize < 0.1){
+            if(randomize < 0.05){
+                this.enemies.push(new MeteorGrey1(this)); 
+            }else if(randomize < 0.1){
+                this.enemies.push(new MeteorBrown2(this)); 
+            }else if(randomize < 0.2){
                 this.enemies.push(new MeteorBrown1(this)); 
             }else if(randomize < 0.5){
                 this.enemies.push(new EnemyType4(this)); 
-            }else if(randomize < 0.5){
+            }else if(randomize < 0.6){
                 this.enemies.push(new EnemyType3(this)); 
             }else if(randomize < 0.7){
                 this.enemies.push(new EnemyType2(this)); 
