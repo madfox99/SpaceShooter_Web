@@ -36,6 +36,7 @@ window.addEventListener('load', function(){
             this.y = y - this.height * 0.5 ;                      
             this.speed = 3;
             this.markedForDeletion = false;
+            this.image = document.getElementById('laserBlue01');
         }
         update(){
             this.x += this.speed;
@@ -44,8 +45,7 @@ window.addEventListener('load', function(){
             }
         }
         draw(context){
-            context.fillStyle = 'yellow'; //  Laser color
-            context.fillRect(this.x, this.y, this.width, this.height);
+            context.drawImage(this.image, this.x, this.y);
         }
 
     }
@@ -93,14 +93,14 @@ window.addEventListener('load', function(){
                 if(this.powerUpTimer > this.powerUpLimit){
                     this.powerUpTimer = 0;
                     this.powerUp = false;
-                    this.image = this.images[0];                  
+                    this.image = this.images[0];             
                 }else{
                     this.powerUpTimer += deltaTime;
                     this.image = this.images[1];
                     this.game.ammo += 0.1;
                 }
             }
-    }
+        }
         draw(context){
             if(this.game.debug){
                 context.strokeRect(this.x, this.y, this.width, this.height);
