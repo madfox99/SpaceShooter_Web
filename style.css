@@ -14,8 +14,9 @@
     background: #4d79bc;
     max-width: 100%;
     max-height: 100%;
+    font-family: 'Bangers', cursive;
 }
 
-#background1, #background2, #background3, #background4, #playerShip1, #playerShip2, #playerShip3, #playerShip4, #enemy1, #enemy2, #enemy3, #enemy4, #meteorBrown1, #meteorBrown2, #meteorGrey1, #boltGold {
+#laserBlue01, #background1, #background2, #background3, #background4, #playerShip1, #playerShip2, #playerShip3, #playerShip4, #enemy1, #enemy2, #enemy3, #enemy4, #meteorBrown1, #meteorBrown2, #meteorGrey1, #boltGold {
     display: none;
 }

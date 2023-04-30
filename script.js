@@ -307,7 +307,7 @@ window.addEventListener('load', function(){
         constructor(game){
             this.game = game;
             this.fontSize = 20;
-            this.fontFamily = 'Helvetica';
+            this.fontFamily = 'Bangers';
             this.color = 'white';
         }
         draw(context){
@@ -328,16 +328,16 @@ window.addEventListener('load', function(){
                 let message1;
                 let message2;
                 if(this.game.score > this.game.winningScore){
-                    message1 = 'You Win!';
-                    message2 = 'Well done!';
+                    message1 = 'Most Wondrous!';
+                    message2 = 'Well done explorer!';
                 }else{
-                    message1 = 'You lose!';
-                    message2 = 'Try agin next time!';
+                    message1 = 'Blazes!';
+                    message2 = 'Good luck next time!';
                 }
-                context.font = '50px '+ this.fontFamily;
-                context.fillText(message1, this.game.width * 0.5, this.game.height * 0.5 - 20);
+                context.font = '70px '+ this.fontFamily;
+                context.fillText(message1, this.game.width * 0.5, this.game.height * 0.5 - 5);
                 context.font = '25px '+ this.fontFamily;
-                context.fillText(message2, this.game.width * 0.5, this.game.height * 0.5 + 20);
+                context.fillText(message2, this.game.width * 0.5, this.game.height * 0.5 + 30);
             }
             // Change display color when it's powerup
             if(this.game.player.powerUp){
@@ -369,9 +369,9 @@ window.addEventListener('load', function(){
             this.ammoInterval = 350; // 0.35 Sec
             this.gameOver = false;
             this.score = 0;
-            this.winningScore = 2000; // Winning score
+            this.winningScore = 10; // Winning score
             this.gameTime = 0;
-            this.timeLimit = 300000; // Game time limit => 30 Sec
+            this.timeLimit = 30000; // Game time limit => 30 Sec
             this.speed = 1; // Game speed
             this.debug = false; // Debug mode
         }
@@ -397,32 +397,34 @@ window.addEventListener('load', function(){
                 // Check collition with the player
                 if(this.checkCollision(this.player, enemy)){
                     enemy.markedForDeletion = true;
-                    if(enemy.type === 'boltGold'){
-                        this.player.enterPowerUp();
-                    }else if(enemy.type === 'meteorBrown1'){
-                        if(this.score <= 0){
-                            this.score = 0;
-                        }else{
-                            this.score -= 6;
+                    if(!this.gameOver){
+                        if(enemy.type === 'boltGold'){
+                            this.player.enterPowerUp();
+                        }else if(enemy.type === 'meteorBrown1'){
+                            if(this.score <= 0){
+                                this.score = 0;
+                            }else{
+                                this.score -= 6;
+                            }
+                        }else if(enemy.type === 'meteorBrown2'){
+                            if(this.score <= 0){
+                                this.score = 0;
+                            }else{
+                                this.score -= 8;
+                            }
+                        }else if(enemy.type === 'meteorGrey1'){
+                            if(this.score <= 0){
+                                this.score = 0;
+                            }else{
+                                this.score -= 10;
+                            }
                         }
-                    }else if(enemy.type === 'meteorBrown2'){
                         if(this.score <= 0){
-                            this.score = 0;
-                        }else{
-                            this.score -= 8;
-                        }
-                    }else if(enemy.type === 'meteorGrey1'){
-                        if(this.score <= 0){
-                            this.score = 0;
-                        }else{
-                            this.score -= 10;
-                        }
-                    }
-                    if(this.score <= 0){
-                            this.score = 0;
+                                this.score = 0;
                         }else{
                             this.score -= 5;
                         }
+                    }                    
                 }
                 // Check collition with projectiles
                 this.player.projectiles.forEach(projectile =>{
