@@ -173,6 +173,19 @@ window.addEventListener('load', function(){
             this.y = Math.random() * (this.game.height - this.height);           
         }
     }
+    
+    class MeteorBrown1 extends Enemy { // MeteorBrown1
+        constructor(game){
+            super(game);
+            this.width = 89;
+            this.height = 82;
+            this.lives = 15;
+            this.score = 17;
+            this.image = document.getElementById('meteorBrown1');
+            this.y = Math.random() * (this.game.height - this.height);   
+            this.type = 'meteorBrown1';         
+        }
+    }
 
     class Layer {
         constructor(game, image, speedModifier){
@@ -342,7 +355,9 @@ window.addEventListener('load', function(){
         }
         addEnemy(){
             const randomize = Math.random();
-            if(randomize < 0.3){
+            if(randomize < 0.1){
+                this.enemies.push(new MeteorBrown1(this)); 
+            }else if(randomize < 0.5){
                 this.enemies.push(new EnemyType4(this)); 
             }else if(randomize < 0.5){
                 this.enemies.push(new EnemyType3(this)); 
