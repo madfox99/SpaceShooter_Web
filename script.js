@@ -62,12 +62,13 @@ window.addEventListener('load', function(){
             this.speedY = 0;
             this.maxSpeed = 2; // player move speed
             this.projectiles = [];
-            this.image1 = document.getElementById('playerShip1');
-            this.image2 = document.getElementById('playerShip2');
-            this.image3 = document.getElementById('playerShip3');
-            this.image4 = document.getElementById('playerShip4');
+            this.images = [document.getElementById('playerShip1'), document.getElementById('playerShip2')]
+            this.image = this.images[0];
+            this.powerUp = false;
+            this.powerUpTimer = 0;
+            this.powerUpLimit = 10000; // 5 Sec
         }
-        update(){
+        update(deltaTime){
             if(this.game.keys.includes('ArrowUp')){
                 this.speedY = -this.maxSpeed;
             }else if(this.game.keys.includes('ArrowDown')){
@@ -76,19 +77,35 @@ window.addEventListener('load', function(){
                 this.speedY = 0;
             }
             this.y += this.speedY;
-
+            // Vertical boundaries
+            if(this.y > this.game.height - this.height * 0.5){
+                this.y = this.game.height - this.height * 0.5;
+            }else if(this.y < -this.height * 0.5){
+                this.y = -this.height * 0.5;
+            }
             // Handle projectiles
             this.projectiles.forEach(projectile => {
                 projectile.update();
             });
             this.projectiles = this.projectiles.filter(projectile => !projectile.markedForDeletion);
-
-        }
+            // Power up state
+            if(this.powerUp){
+                if(this.powerUpTimer > this.powerUpLimit){
+                    this.powerUpTimer = 0;
+                    this.powerUp = false;
+                    this.image = this.images[0];                  
+                }else{
+                    this.powerUpTimer += deltaTime;
+                    this.image = this.images[1];
+                    this.game.ammo += 0.1;
+                }
+            }
+    }
         draw(context){
             if(this.game.debug){
                 context.strokeRect(this.x, this.y, this.width, this.height);
             }            
-            context.drawImage(this.image1, this.x, this.y);
+            context.drawImage(this.image, this.x, this.y);
             this.projectiles.forEach(Projectile => {
                 Projectile.draw(context);
             });
@@ -98,13 +115,30 @@ window.addEventListener('load', function(){
                 this.projectiles.push(new Projectile(this.game, this.x + this.width, this.y + this.height * 0.5));
                 this.game.ammo--;
             }
+            if(this.powerUp){
+                this.shootTails();
+            }
+        }
+        shootTails(){
+            if(this.game.ammo > 0){
+                this.projectiles.push(new Projectile(this.game, this.x + 41, this.y + 2));
+                this.projectiles.push(new Projectile(this.game, this.x + 41, this.y + this.height - 2));
+            }
+        }
+        enterPowerUp(){
+            this.powerUpTimer = 0;
+            this.powerUp = true;
+            if(this.game.ammo < this.game.maxAmmo){
+                this.game.ammo = this.game.maxAmmo;
+            }
+            this.image = this.images[1]; // Red ship
         }
     }
     class Enemy {
         constructor(game){
             this.game = game;
             this.x = this.game.width;
-            this.speedX = Math.random() * -1.5 - 0.5;
+            this.speedX = Math.random() * - 1.5 - 0.5;
             this.markedForDeletion = false;
                         
         }
@@ -212,6 +246,19 @@ window.addEventListener('load', function(){
             this.type = 'meteorGrey1';         
         }
     }
+    
+    class BoltGold extends Enemy { // Gold bolt
+        constructor(game){
+            super(game);
+            this.width = 34;
+            this.height = 33;
+            this.lives = 1;
+            this.score = 0;
+            this.image = document.getElementById('boltGold');
+            this.y = Math.random() * (this.game.height - this.height);   
+            this.type = 'boltGold';         
+        }
+    }
 
     class Layer {
         constructor(game, image, speedModifier){
@@ -270,9 +317,13 @@ window.addEventListener('load', function(){
             context.shadowOffsetY = 2;
             context.shadowColor = 'black';
             context.font = this.fontSize + 'px ' + this.fontFamily;
+            // Change displat color when it's powerup
+            if(this.game.player.powerUp){
+                context.fillStyle = '#DE532B';
+            }
             // Display score
             context.fillText('Score: ' + this.game.score, 20, 40);
-            // Display ammo           
+            // Display ammo            
             for(let i = 0; i< this.game.ammo; i++){
                 context.fillRect(20 + 5 * i, 50, 3, 20)
             }
@@ -320,7 +371,7 @@ window.addEventListener('load', function(){
             this.winningScore = 2000; // Winning score
             this.gameTime = 0;
             this.timeLimit = 300000; // Game time limit => 30 Sec
-            this.speed = 3; // Game speed
+            this.speed = 1; // Game speed
             this.debug = false; // Debug mode
         }
         update(deltaTime){
@@ -330,8 +381,8 @@ window.addEventListener('load', function(){
             if(this.gameTime > this.timeLimit){
                 this.gameOver = true;
             }
-            this.background.update();
-            this.player.update();
+            this.background.update(deltaTime);
+            this.player.update(deltaTime);
             if(this.ammoTimer > this.ammoInterval){
                 if(this.ammo < this.maxAmmo){
                     this.ammo++;
@@ -345,6 +396,32 @@ window.addEventListener('load', function(){
                 // Check collition with the player
                 if(this.checkCollision(this.player, enemy)){
                     enemy.markedForDeletion = true;
+                    if(enemy.type === 'boltGold'){
+                        this.player.enterPowerUp();
+                    }else if(enemy.type === 'meteorBrown1'){
+                        if(this.score <= 0){
+                            this.score = 0;
+                        }else{
+                            this.score -= 6;
+                        }
+                    }else if(enemy.type === 'meteorBrown2'){
+                        if(this.score <= 0){
+                            this.score = 0;
+                        }else{
+                            this.score -= 8;
+                        }
+                    }else if(enemy.type === 'meteorGrey1'){
+                        if(this.score <= 0){
+                            this.score = 0;
+                        }else{
+                            this.score -= 10;
+                        }
+                    }
+                    if(this.score <= 0){
+                            this.score = 0;
+                        }else{
+                            this.score -= 5;
+                        }
                 }
                 // Check collition with projectiles
                 this.player.projectiles.forEach(projectile =>{
@@ -381,8 +458,10 @@ window.addEventListener('load', function(){
         }
         addEnemy(){
             const randomize = Math.random();
-            if(randomize < 0.05){
-                this.enemies.push(new MeteorGrey1(this)); 
+            if(randomize < 0.04){
+                this.enemies.push(new BoltGold(this)); 
+            }else if(randomize < 0.05){
+                this.enemies.push(new MeteorBrown1(this)); 
             }else if(randomize < 0.1){
                 this.enemies.push(new MeteorBrown2(this)); 
             }else if(randomize < 0.2){
