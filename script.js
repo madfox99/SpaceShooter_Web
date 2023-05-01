@@ -281,8 +281,8 @@ window.addEventListener('load', function(){
     class BoltGold extends Enemy { // Gold bolt
         constructor(game){
             super(game);
-            this.width = 34;
-            this.height = 33;
+            this.width = 19;
+            this.height = 30;
             this.lives = 1;
             this.score = 0;
             this.image = document.getElementById('boltGold');
