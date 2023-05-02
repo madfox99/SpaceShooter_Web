@@ -4,6 +4,14 @@ const ctx = canvas.getContext('2d');
 canvas.width = 1500;
 canvas.height = 500;
 
+// Bottons
+const playButton = document.getElementById('play_button');
+let playButtonClicked = false;
+
+// Solid background
+const background = new Image();
+background.src = document.getElementById('background1').src;
+
 class InputHandler {
     constructor(game){
         this.game = game;
@@ -508,36 +516,34 @@ class Game {
     }
 }
 
+// Game object
 const game = new Game(canvas.width, canvas.height);
-let lastTime = 0;
+let lastTime;
 
-// Loop animation
-function animate(timeStamp){
-    const deltaTime = timeStamp - lastTime;
-    lastTime = timeStamp;
+function animate(currentTime){
+    const deltaTime = currentTime - lastTime;
+    lastTime = currentTime;
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas for looping
     game.update(deltaTime);
     game.draw(ctx);
     requestAnimationFrame(animate);
+
 }
 
-// Bottons
-const playButton = document.getElementById('play_button');
+function start(){
+    background.onload = function() {
+        // draw the image onto the canvas
+        ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+    };
+    playButton.addEventListener('click', () => {
+        playButton.disabled = true;
+        playButton.style.display = 'none';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        lastTime = performance.now(); // Set the initial value for lastTime
+        animate(performance.now()); // Pass the current time
+        playButton.remove();
+        background.remove();
+    });      
+}
 
-playButton.addEventListener('click', () => {
-    playButton.disabled = true;
-    playButton.style.display = 'none';
-    ctx.fillStyle = '#f00';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    animate(0);
-    playButton.remove();
-});
-
-const background = new Image();
-
-background.onload = function() {
-  // draw the image onto the canvas
-  ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-};
-
-background.src = document.getElementById('background1').src;
+start();
