@@ -6,17 +6,50 @@
 }
 
 #canvas1 {
-    border: 1px solid black;
+    /* border: 1px solid black; */
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: #4d79bc;
+    /* background: #4d79bc; */
     max-width: 100%;
     max-height: 100%;
     font-family: 'Bangers', cursive;
 }
 
-#laserBlue01, #background1, #background2, #background3, #background4, #playerShip1, #playerShip2, #playerShip3, #playerShip4, #enemy1, #enemy2, #enemy3, #enemy4, #meteorBrown1, #meteorBrown2, #meteorGrey1, #boltGold {
+#laserBlue01, #background, #start-screen, #background1, #background2, #background3, #background4, #playerShip1, #playerShip2, #playerShip3, #playerShip4, #enemy1, #enemy2, #enemy3, #enemy4, #meteorBrown1, #meteorBrown2, #meteorGrey1, #boltGold {
     display: none;
-}
+}  
+#background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+#play_button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    padding: 10px 20px;
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-radius: 5px;
+    background-color: #ddb103;
+    color: #fff;
+    border: none;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    background-image: linear-gradient(to bottom, #ffcc00, #ddb103);
+  }
+  
+  #play_button:hover {
+    transform: translate(-50%, -55%);
+    background-image: linear-gradient(to bottom, #ffa500, #f67c00);
+    box-shadow: 0 5px 8px rgba(0,0,0,0.6);
+  }
+  

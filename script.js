@@ -1,6 +1,3 @@
-// select the Start Game button element
-const startButton = document.querySelector('#start-screen button');
-
 // Game canvas
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
@@ -320,13 +317,7 @@ class Background {
     constructor(game){
         this.game = game;
         this.image1 = document.getElementById('background1');
-        this.image2 = document.getElementById('background2');
-        this.image3 = document.getElementById('background3');
-        this.image4 = document.getElementById('background4');
         this.layer1 = new Layer(this.game, this.image1, 1);
-        this.layer2 = new Layer(this.game, this.image2, 1);
-        this.layer3 = new Layer(this.game, this.image3, 1);
-        this.layer4 = new Layer(this.game, this.image4, 1);
         this.layers = [this.layer1];
     }
     update(){
@@ -352,8 +343,7 @@ class UI {
         context.shadowColor = 'black';
         context.font = this.fontSize + 'px ' + this.fontFamily;            
         // Display score
-        context.fillText('Score: ' + this.game.score, 20, 40);
-        
+        context.fillText('Score: ' + this.game.score, 20, 40);        
         // Display game timer
         context.fillText('Timer: ' + (this.game.gameTime * 0.001).toFixed(1), 20, 100);
         // Game Win/Over
@@ -531,8 +521,23 @@ function animate(timeStamp){
     requestAnimationFrame(animate);
 }
 
-// add an event listener to the Start Game button element
-startButton.addEventListener('click', function() {
+// Bottons
+const playButton = document.getElementById('play_button');
+
+playButton.addEventListener('click', () => {
+    playButton.disabled = true;
+    playButton.style.display = 'none';
+    ctx.fillStyle = '#f00';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     animate(0);
-    this.disabled = true;
+    playButton.remove();
 });
+
+const background = new Image();
+
+background.onload = function() {
+  // draw the image onto the canvas
+  ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+};
+
+background.src = document.getElementById('background1').src;
