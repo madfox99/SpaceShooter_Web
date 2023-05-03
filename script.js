@@ -34,6 +34,37 @@ class InputHandler {
     update(){}
     draw(){}
 }
+
+class SoundController {
+    constructor(){
+        this.shootSound = document.getElementById("shot");
+        this.powerupSound = document.getElementById("powerup");
+        this.powerdownSound = document.getElementById("powerdown");
+        this.smokeExplosionSound = document.getElementById("smokeExplosion");
+        this.hitSound = document.getElementById("hit");
+    }
+    hit(){
+        this.hitSound.currentTime = 0;
+        this.hitSound.play();
+    }    
+    smokeExplosion(){
+        this.smokeExplosionSound.currentTime = 0;
+        this.smokeExplosionSound.play();
+    }
+    powerUp(){
+        this.powerupSound.currentTime = 0;
+        this.powerupSound.play();
+    }
+    powerDown(){
+        this.powerdownSound.currentTime = 0;
+        this.powerdownSound.play();
+    }
+    shot(){
+        this.shootSound.currentTime = 0;
+        this.shootSound.play();
+    }
+}
+
 class Projectile {
     constructor(game, x, y){
         this.game = game;
@@ -100,7 +131,8 @@ class Player {
             if(this.powerUpTimer > this.powerUpLimit){
                 this.powerUpTimer = 0;
                 this.powerUp = false;
-                this.image = this.images[0];             
+                this.image = this.images[0];
+                this.game.sound.powerDown();          
             }else{
                 this.powerUpTimer += deltaTime;
                 this.image = this.images[1];
@@ -122,6 +154,7 @@ class Player {
             this.projectiles.push(new Projectile(this.game, this.x + this.width, this.y + this.height * 0.5));
             this.game.ammo--;
         }
+        this.game.sound.shot();
         if(this.powerUp){
             this.shootTails();
         }
@@ -138,6 +171,7 @@ class Player {
         if(this.game.ammo < this.game.maxAmmo){
             this.game.ammo = this.game.maxAmmo;
         }
+        this.game.sound.powerUp();
         this.image = this.images[1]; // Red ship
     }
 }
@@ -477,6 +511,7 @@ class Game {
         this.player = new Player(this);
         this.input = new InputHandler(this);
         this.ui = new UI(this);
+        this.sound = new SoundController();
         this.keys = [];
         this.enemies = [];
         this.explosions = [];
@@ -554,7 +589,11 @@ class Game {
                     enemy.lives--;
                     projectile.markedForDeletion = true;
                     if(enemy.lives <= 0){
-                        if(enemy.type === 'meteorBrown1' || enemy.type === 'meteorBrown2' || enemy.type === 'meteorGrey1' || enemy.type === 'enemyShip'){
+                        if(enemy.type === 'meteorBrown1' || enemy.type === 'meteorBrown2' || enemy.type === 'meteorGrey1'){
+                            this.sound.smokeExplosion();
+                            this.addExplosion(enemy);
+                        }else if(enemy.type === 'enemyShip'){
+                            this.sound.hit();
                             this.addExplosion(enemy);
                         }
                         enemy.markedForDeletion = true;
