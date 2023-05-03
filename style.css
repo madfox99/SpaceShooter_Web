@@ -6,12 +6,10 @@
 }
 
 #canvas1 {
-    /* border: 1px solid black; */
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    /* background: #4d79bc; */
     max-width: 100%;
     max-height: 100%;
     font-family: 'Bangers', cursive;
@@ -26,30 +24,96 @@
     left: 0;
     z-index: -1;
   }
-#play_button {
+
+  #play_button {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
     padding: 10px 20px;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 2px;
-    border-radius: 5px;
+    border-radius: 20px;
+    background-color: #6eb800;
+    color: #fff;
+    border: none;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    background-image: linear-gradient(to bottom, #4bb543, #3f9d2f);
+
+    
+    /* Add the following styles */
+    display: inline-block;
+  }
+  
+  #howto_button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    padding: 10px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-radius: 20px;
     background-color: #ddb103;
     color: #fff;
     border: none;
     box-shadow: 0 3px 6px rgba(0,0,0,0.4);
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    background-image: linear-gradient(to bottom, #ffcc00, #ddb103);
+    background-image: linear-gradient(to bottom, #0077c2, #005ea6);
+  
+    /* Add the following styles */
+    display: inline-block;
+    margin-left: 150px;
+  }
+
+  #score_button {
+    position: absolute;
+    top: 50%;
+    left: 50%; /* Change this to 61% */
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    padding: 10px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-radius: 20px;
+    background-color: #ddb103;
+    color: #fff;
+    border: none;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    background-image: linear-gradient(to bottom, #ff9800, #f57c00);
+  
+    /* Add the following styles */
+    display: inline-block;
+    margin-left: -140px;
   }
   
-  #play_button:hover {
+#score_button:hover {
     transform: translate(-50%, -55%);
-    background-image: linear-gradient(to bottom, #ffa500, #f67c00);
+    background-image: linear-gradient(to bottom, #fb8c00, #ef6c00);
     box-shadow: 0 5px 8px rgba(0,0,0,0.6);
-  }
-  
+  } 
+
+#play_button:hover {
+  transform: translate(-50%, -55%);
+  background-image: linear-gradient(to bottom, #43a047, #388e3c);
+  box-shadow: 0 8px 12px rgba(0,0,0,0.6);
+}
+
+#howto_button:hover {
+  transform: translate(-50%, -55%);
+  background-image: linear-gradient(to bottom, #0069c0, #004b8f);
+  box-shadow: 0 8px 12px rgba(0,0,0,0.6);
+}  

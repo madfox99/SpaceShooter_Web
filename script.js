@@ -3,9 +3,14 @@ const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
 canvas.width = 1500;
 canvas.height = 500;
+
 // Bottons
 const playButton = document.getElementById('play_button');
-let playButtonClicked = false;
+const howtoButton = document.getElementById('howto_button');
+const scoreButton = document.getElementById('score_button');
+const buttonclickMusic = document.getElementById('buttonclick');
+
+const backgroundMusic = document.getElementById('backgroundmusic');
 
 // Solid background
 const background = new Image();
@@ -523,7 +528,7 @@ class Game {
         this.ammoInterval = 350; // 0.35 Sec
         this.gameOver = false;
         this.score = 0;
-        this.winningScore = 1000; // Winning score
+        this.winningScore = 400; // Winning score
         this.gameTime = 0;
         this.timeLimit = 90000; // Game time limit => 90 Sec
         this.speed = 1; // Game speed
@@ -620,11 +625,11 @@ class Game {
         this.player.draw(context);            
         this.enemies.forEach(enemy => {
             enemy.draw(context);
-        });
-        this.ui.draw(context);
+        });        
         this.explosions.forEach(explosion => {
             explosion.draw(context);
         });
+        this.ui.draw(context);
     }
     addEnemy(){   
         const randomize = Math.random();
@@ -681,15 +686,28 @@ function start(){
     background.onload = function() {
         // draw the image onto the canvas
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+        // loop the background music until start button is clicked
+        backgroundMusic.addEventListener('ended', function() {
+            this.currentTime = 0;
+            this.play();
+        }, false);
+        backgroundMusic.play();
     };
+
     playButton.addEventListener('click', () => {
+        buttonclickMusic.play();
         playButton.disabled = true;
         playButton.style.display = 'none';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        lastTime = performance.now(); // Set the initial value for lastTime
-        animate(performance.now()); // Pass the current time
-        playButton.remove();
+        howtoButton.disabled = true;
+        howtoButton.style.display = 'none';
+        scoreButton.disabled = true;
+        scoreButton.style.display = 'none';
+        ctx.fillRect(0, 0, canvas.width, canvas.height); // Clear canvas
+        backgroundMusic.remove();
         background.remove();
+        lastTime = performance.now(); // Set the initial value for lastTime
+        animate(performance.now()); // Pass the current time        
     });      
 }
 
