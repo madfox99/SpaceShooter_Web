@@ -3,14 +3,13 @@ const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
 canvas.width = 1500;
 canvas.height = 500;
-
 // Bottons
 const playButton = document.getElementById('play_button');
 let playButtonClicked = false;
 
 // Solid background
 const background = new Image();
-background.src = document.getElementById('background1').src;
+background.src = document.getElementById('background').src;
 
 class InputHandler {
     constructor(game){
@@ -336,6 +335,73 @@ class Background {
     }
 
 }
+
+class Explosion {
+    constructor(game, x, y){
+        this.game = game;
+        this.frameX = 0;        
+        this.fps = 30;
+        this.timer = 0;
+        this.interval = 1000/this.fps;
+        this.markedForDeletion = false;
+        this.maxFrame = 8;
+    }
+    update(deltaTime){
+        this.x -= this.game.speed;
+        if(this.timer > this.interval){
+            this.frameX++;
+            this.timer = 0;
+        }else{
+            this.timer += deltaTime;
+        }
+        if(this.frameX > this.maxFrame){
+            this.markedForDeletion = true;
+        }
+    }
+    draw(context){
+        context.drawImage(this.image, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
+    }
+}
+
+class SmokeExplosion1 extends Explosion {
+    constructor(game, x, y){
+        super(game, x, y);
+        this.image = document.getElementById('smokeExplosion1');
+        this.spriteWidth = 90;
+        this.spriteHeight = 90;
+        this.width = this.spriteWidth;
+        this.height = this.spriteHeight;
+        this.x = x - this.width * 0.5;
+        this.y = y - this.height * 0.5;      
+    }
+}
+
+class SmokeExplosion2 extends Explosion {
+    constructor(game, x, y){
+        super(game, x, y);
+        this.image = document.getElementById('smokeExplosion2');  
+        this.spriteWidth = 45;
+        this.spriteHeight = 45;
+        this.width = this.spriteWidth;
+        this.height = this.spriteHeight;
+        this.x = x - this.width * 0.5;
+        this.y = y - this.height * 0.5;          
+    }
+}
+
+class SmokeExplosion3 extends Explosion {
+    constructor(game, x, y){
+        super(game, x, y);
+        this.image = document.getElementById('smokeExplosion3');
+        this.spriteWidth = 30;
+        this.spriteHeight = 30;
+        this.width = this.spriteWidth;
+        this.height = this.spriteHeight;
+        this.x = x - this.width * 0.5;
+        this.y = y - this.height * 0.5;        
+    }
+}
+
 class UI {
     constructor(game){
         this.game = game;
@@ -393,6 +459,7 @@ class Game {
         this.ui = new UI(this);
         this.keys = [];
         this.enemies = [];
+        this.explosions = [];
         this.enemyTimer = 0;
         this.enemyInterval = 1000; // 1 Sec
         this.ammo = 20;
@@ -401,7 +468,7 @@ class Game {
         this.ammoInterval = 350; // 0.35 Sec
         this.gameOver = false;
         this.score = 0;
-        this.winningScore = 100; // Winning score
+        this.winningScore = 1000; // Winning score
         this.gameTime = 0;
         this.timeLimit = 90000; // Game time limit => 90 Sec
         this.speed = 1; // Game speed
@@ -424,27 +491,31 @@ class Game {
         }else{
             this.ammoTimer += deltaTime;
         }
-        this.enemies.forEach(enemy => {                
+        this.explosions.forEach(explosion => explosion.update(deltaTime));
+        this.explosions = this.explosions.filter(explosion => !explosion.markedForDeletion);this.enemies.forEach(enemy => {                
             enemy.update();
-            // Check collition with the player
+            // Check collition with the enemy/powerUp
             if(this.checkCollision(this.player, enemy)){
                 enemy.markedForDeletion = true;
                 if(!this.gameOver){
                     if(enemy.type === 'boltGold'){
                         this.player.enterPowerUp();
                     }else if(enemy.type === 'meteorBrown1'){
+                        this.addExplosion(enemy);
                         if(this.score <= 0){
                             this.score = 0;
                         }else{
                             this.score -= 6;
                         }
                     }else if(enemy.type === 'meteorBrown2'){
+                        this.addExplosion(enemy);
                         if(this.score <= 0){
                             this.score = 0;
                         }else{
                             this.score -= 8;
                         }
                     }else if(enemy.type === 'meteorGrey1'){
+                        this.addExplosion(enemy);
                         if(this.score <= 0){
                             this.score = 0;
                         }else{
@@ -464,6 +535,9 @@ class Game {
                     enemy.lives--;
                     projectile.markedForDeletion = true;
                     if(enemy.lives <= 0){
+                        if(enemy.type === 'meteorBrown1' || enemy.type === 'meteorBrown2' || enemy.type === 'meteorGrey1'){
+                            this.addExplosion(enemy);
+                        }
                         enemy.markedForDeletion = true;
                         if(!this.gameOver){
                             this.score += enemy.score;
@@ -490,6 +564,9 @@ class Game {
             enemy.draw(context);
         });
         this.ui.draw(context);
+        this.explosions.forEach(explosion => {
+            explosion.draw(context);
+        });
     }
     addEnemy(){   
         const randomize = Math.random();
@@ -510,6 +587,16 @@ class Game {
         }else if(randomize < 0.8){
             this.enemies.push(new EnemyType1(this)); 
         }                   
+    }
+    addExplosion(enemy){
+        if(enemy.type === 'meteorBrown1'){
+            this.explosions.push(new SmokeExplosion1(this, enemy.x + enemy.width * 0.5, enemy.y + enemy.height * 0.5));
+        }else if(enemy.type === 'meteorGrey1'){
+            this.explosions.push(new SmokeExplosion2(this, enemy.x + enemy.width * 0.5, enemy.y + enemy.height * 0.5));
+        }else if(enemy.type === 'meteorBrown2'){
+            this.explosions.push(new SmokeExplosion3(this, enemy.x + enemy.width * 0.5, enemy.y + enemy.height * 0.5));
+        }
+
     }
     checkCollision(rect1, rect2){
         return(rect1.x < rect2.x + rect2.width && rect1.x + rect1.width > rect2.x && rect1.y < rect2.y + rect2.height && rect1.height + rect1.y > rect2.y);
