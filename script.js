@@ -517,38 +517,36 @@ class Game {
             // Check collition with the enemy/powerUp
             if(this.checkCollision(this.player, enemy)){
                 enemy.markedForDeletion = true;
-                if(!this.gameOver){
-                    if(enemy.type === 'boltGold'){
-                        this.player.enterPowerUp();
-                    }else if(enemy.type === 'meteorBrown1'){
-                        this.addExplosion(enemy);
-                        if(this.score <= 0){
-                            this.score = 0;
-                        }else{
-                            this.score -= 6;
-                        }
-                    }else if(enemy.type === 'meteorBrown2'){
-                        this.addExplosion(enemy);
-                        if(this.score <= 0){
-                            this.score = 0;
-                        }else{
-                            this.score -= 8;
-                        }
-                    }else if(enemy.type === 'meteorGrey1'){
-                        this.addExplosion(enemy);
-                        if(this.score <= 0){
-                            this.score = 0;
-                        }else{
-                            this.score -= 10;
-                        }
-                    }
+                if(enemy.type === 'boltGold'){
+                    this.player.enterPowerUp();
+                }else if(enemy.type === 'meteorBrown1'){
                     this.addExplosion(enemy);
-                    if(this.score <= 0){
-                            this.score = 0;
+                    if(this.score <= 0 && !this.gameOver){
+                        this.score = 0;
                     }else{
-                        this.score -= 5;
+                        this.score -= 6;
                     }
-                }                    
+                }else if(enemy.type === 'meteorBrown2'){
+                    this.addExplosion(enemy);
+                    if(this.score <= 0 && !this.gameOver){
+                        this.score = 0;
+                    }else{
+                        this.score -= 8;
+                    }
+                }else if(enemy.type === 'meteorGrey1'){
+                    this.addExplosion(enemy);
+                    if(this.score <= 0 && !this.gameOver){
+                        this.score = 0;
+                    }else{
+                        this.score -= 10;
+                    }
+                }
+                this.addExplosion(enemy);
+                if(this.score <= 0 && !this.gameOver){
+                        this.score = 0;
+                }else{
+                    this.score -= 5;
+                }               
             }
             // Check collition with projectiles
             this.player.projectiles.forEach(projectile =>{
