@@ -36,8 +36,6 @@ class InputHandler {
             }
         });
     }
-    update(){}
-    draw(){}
 }
 
 class SoundController {
