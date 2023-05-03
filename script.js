@@ -175,7 +175,8 @@ class EnemyType1 extends Enemy { // Gray ship enemy
         this.lives = 3;
         this.score = this.lives;
         this.image = document.getElementById('enemy1');
-        this.y = Math.random() * (this.game.height - this.height);                        
+        this.y = Math.random() * (this.game.height - this.height);
+        this.type = 'enemyShip';                      
     }
 }
 
@@ -187,7 +188,8 @@ class EnemyType2 extends Enemy { // Blue ship enemy
         this.lives = 5;
         this.score = this.lives;
         this.image = document.getElementById('enemy2');
-        this.y = Math.random() * (this.game.height - this.height);           
+        this.y = Math.random() * (this.game.height - this.height);
+        this.type = 'enemyShip';          
     }
 }
 
@@ -199,7 +201,8 @@ class EnemyType3 extends Enemy { // Green ship enemy
         this.lives = 6;
         this.score = this.lives;
         this.image = document.getElementById('enemy3');
-        this.y = Math.random() * (this.game.height - this.height);           
+        this.y = Math.random() * (this.game.height - this.height);
+        this.type = 'enemyShip';      
     }
 }
 
@@ -211,7 +214,8 @@ class EnemyType4 extends Enemy { // Green ship enemy
         this.lives = 8;
         this.score = this.lives;
         this.image = document.getElementById('enemy4');
-        this.y = Math.random() * (this.game.height - this.height);           
+        this.y = Math.random() * (this.game.height - this.height);
+        this.type = 'enemyShip';       
     }
 }
 
@@ -343,8 +347,7 @@ class Explosion {
         this.fps = 30;
         this.timer = 0;
         this.interval = 1000/this.fps;
-        this.markedForDeletion = false;
-        this.maxFrame = 8;
+        this.markedForDeletion = false;        
     }
     update(deltaTime){
         this.x -= this.game.speed;
@@ -363,6 +366,20 @@ class Explosion {
     }
 }
 
+class FireExplosion extends Explosion {
+    constructor(game, x, y){
+        super(game, x, y);
+        this.image = document.getElementById('fireExplosion');
+        this.spriteWidth = 100;
+        this.spriteHeight = 107;
+        this.width = this.spriteWidth;
+        this.height = this.spriteHeight;
+        this.x = x - this.width * 0.5;
+        this.y = y - this.height * 0.5;
+        this.maxFrame = 7;   
+    }
+}
+
 class SmokeExplosion1 extends Explosion {
     constructor(game, x, y){
         super(game, x, y);
@@ -372,7 +389,8 @@ class SmokeExplosion1 extends Explosion {
         this.width = this.spriteWidth;
         this.height = this.spriteHeight;
         this.x = x - this.width * 0.5;
-        this.y = y - this.height * 0.5;      
+        this.y = y - this.height * 0.5;
+        this.maxFrame = 8;   
     }
 }
 
@@ -385,7 +403,8 @@ class SmokeExplosion2 extends Explosion {
         this.width = this.spriteWidth;
         this.height = this.spriteHeight;
         this.x = x - this.width * 0.5;
-        this.y = y - this.height * 0.5;          
+        this.y = y - this.height * 0.5;
+        this.maxFrame = 8;       
     }
 }
 
@@ -398,7 +417,8 @@ class SmokeExplosion3 extends Explosion {
         this.width = this.spriteWidth;
         this.height = this.spriteHeight;
         this.x = x - this.width * 0.5;
-        this.y = y - this.height * 0.5;        
+        this.y = y - this.height * 0.5;
+        this.maxFrame = 8;     
     }
 }
 
@@ -522,6 +542,7 @@ class Game {
                             this.score -= 10;
                         }
                     }
+                    this.addExplosion(enemy);
                     if(this.score <= 0){
                             this.score = 0;
                     }else{
@@ -535,7 +556,7 @@ class Game {
                     enemy.lives--;
                     projectile.markedForDeletion = true;
                     if(enemy.lives <= 0){
-                        if(enemy.type === 'meteorBrown1' || enemy.type === 'meteorBrown2' || enemy.type === 'meteorGrey1'){
+                        if(enemy.type === 'meteorBrown1' || enemy.type === 'meteorBrown2' || enemy.type === 'meteorGrey1' || enemy.type === 'enemyShip'){
                             this.addExplosion(enemy);
                         }
                         enemy.markedForDeletion = true;
@@ -595,6 +616,8 @@ class Game {
             this.explosions.push(new SmokeExplosion2(this, enemy.x + enemy.width * 0.5, enemy.y + enemy.height * 0.5));
         }else if(enemy.type === 'meteorBrown2'){
             this.explosions.push(new SmokeExplosion3(this, enemy.x + enemy.width * 0.5, enemy.y + enemy.height * 0.5));
+        }else if(enemy.type === 'enemyShip'){
+            this.explosions.push(new FireExplosion(this, enemy.x + enemy.width * 0.5, enemy.y + enemy.height * 0.5));
         }
 
     }

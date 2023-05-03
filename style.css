@@ -17,7 +17,7 @@
     font-family: 'Bangers', cursive;
 }
 
-#laserBlue01, #background, #start-screen, #background1, #background2, #background3, #background4, #playerShip1, #playerShip2, #playerShip3, #playerShip4, #enemy1, #enemy2, #enemy3, #enemy4, #meteorBrown1, #meteorBrown2, #meteorGrey1, #boltGold {
+#laserBlue01, #fireExplosion, #smokeExplosion1, #smokeExplosion2, #smokeExplosion3, #background, #start-screen, #background1, #background2, #background3, #background4, #playerShip1, #playerShip2, #playerShip3, #playerShip4, #enemy1, #enemy2, #enemy3, #enemy4, #meteorBrown1, #meteorBrown2, #meteorGrey1, #boltGold {
     display: none;
 }  
 #background {
