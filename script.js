@@ -32,9 +32,9 @@ class InputHandler {
         this.game = game;
         // KeyDown
         window.addEventListener('keydown', e => {
-            if (((e.key === 'ArrowUp') || (e.key === 'ArrowDown')) && this.game.keys.indexOf(e.key) === -1) {
+            if (((e.key === 'ArrowUp') || (e.key === 'ArrowDown')) && this.game.keys.indexOf(e.key) === -1 && isGameStart) {
                 this.game.keys.push(e.key);
-            } else if (e.key === ' ') {
+            } else if (e.key === ' ' && isGameStart) {
                 this.game.player.shootMiddle();
             } else if (e.key === 'd' && isGameStart) {
                 this.game.debug = !this.game.debug;
