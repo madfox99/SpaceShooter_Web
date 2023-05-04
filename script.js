@@ -12,9 +12,19 @@ const buttonclickMusic = document.getElementById('buttonclick');
 
 const backgroundMusic = document.getElementById('backgroundmusic');
 
+var title = 'Space shooter';
+var developerMode = '';
+var muteMode = '';
+let isMute = false;
+let isGameStart = false;
+
 // Solid background
 const background = new Image();
 background.src = document.getElementById('background').src;
+
+function webTitle() {
+    document.title = muteMode + title + developerMode;
+}
 
 class InputHandler {
     constructor(game) {
@@ -25,8 +35,14 @@ class InputHandler {
                 this.game.keys.push(e.key);
             } else if (e.key === ' ') {
                 this.game.player.shootMiddle();
-            } else if (e.key === 'd') {
+            } else if(e.key === 'd' && isGameStart){
                 this.game.debug = !this.game.debug;
+                if(this.game.debug){
+                    developerMode =' (Developer)';                        
+                }else{
+                    developerMode ='';
+                }
+                webTitle();             
             }
         });
         // KeyUp
@@ -49,27 +65,27 @@ class SoundController {
     }
     shield() {
         this.shieldSound.currentTime = 0;
-        this.shieldSound.play();
+        if(!muteMode) this.shieldSound.play();
     }
     hit() {
         this.hitSound.currentTime = 0;
-        this.hitSound.play();
+        if(!muteMode) this.hitSound.play();
     }
     smokeExplosion() {
         this.smokeExplosionSound.currentTime = 0;
-        this.smokeExplosionSound.play();
+        if(!muteMode) this.smokeExplosionSound.play();
     }
     powerUp() {
         this.powerupSound.currentTime = 0;
-        this.powerupSound.play();
+        if(!muteMode) this.powerupSound.play();
     }
     powerDown() {
         this.powerdownSound.currentTime = 0;
-        this.powerdownSound.play();
+        if(!muteMode) this.powerdownSound.play();
     }
     shot() {
         this.shootSound.currentTime = 0;
-        this.shootSound.play();
+        if(!muteMode) this.shootSound.play();
     }
 }
 
@@ -724,14 +740,28 @@ function start() {
     background.onload = function () {
         // draw the image onto the canvas
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-
+      
         // loop the background music until start button is clicked
         backgroundMusic.addEventListener('ended', function () {
-            this.currentTime = 0;
-            this.play();
+          this.currentTime = 0;
+          this.play();
         }, false);
+      
         backgroundMusic.play();
-    };
+      
+        document.addEventListener('keydown', function(event) {
+          if (event.key === 'm') {
+            isMute = !isMute;
+            if(!isGameStart) backgroundMusic.muted = isMute;
+            if(isMute){
+                muteMode ='\u{1F507} ';
+            }else{
+                muteMode ='';
+            }
+            webTitle();
+          }
+        });
+      };
 
     playButton.addEventListener('click', () => {
         buttonclickMusic.play();
@@ -741,6 +771,7 @@ function start() {
         howtoButton.style.display = 'none';
         scoreButton.disabled = true;
         scoreButton.style.display = 'none';
+        isGameStart = true;
         ctx.fillRect(0, 0, canvas.width, canvas.height); // Clear canvas
         backgroundMusic.remove();
         background.remove();
