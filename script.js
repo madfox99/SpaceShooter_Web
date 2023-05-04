@@ -12,7 +12,8 @@ const buttonclickMusic = document.getElementById('buttonclick');
 
 const backgroundMusic = document.getElementById('backgroundmusic');
 
-var title = 'Space shooter';
+const gameName = document.getElementById('gameName');
+var title = 'Space Shooter';
 var developerMode = '';
 var muteMode = '';
 let isMute = false;
@@ -35,14 +36,14 @@ class InputHandler {
                 this.game.keys.push(e.key);
             } else if (e.key === ' ') {
                 this.game.player.shootMiddle();
-            } else if(e.key === 'd' && isGameStart){
+            } else if (e.key === 'd' && isGameStart) {
                 this.game.debug = !this.game.debug;
-                if(this.game.debug){
-                    developerMode =' (Developer)';                        
-                }else{
-                    developerMode ='';
+                if (this.game.debug) {
+                    developerMode = ' (Developer)';
+                } else {
+                    developerMode = '';
                 }
-                webTitle();             
+                webTitle();
             }
         });
         // KeyUp
@@ -65,27 +66,27 @@ class SoundController {
     }
     shield() {
         this.shieldSound.currentTime = 0;
-        if(!muteMode) this.shieldSound.play();
+        if (!muteMode) this.shieldSound.play();
     }
     hit() {
         this.hitSound.currentTime = 0;
-        if(!muteMode) this.hitSound.play();
+        if (!muteMode) this.hitSound.play();
     }
     smokeExplosion() {
         this.smokeExplosionSound.currentTime = 0;
-        if(!muteMode) this.smokeExplosionSound.play();
+        if (!muteMode) this.smokeExplosionSound.play();
     }
     powerUp() {
         this.powerupSound.currentTime = 0;
-        if(!muteMode) this.powerupSound.play();
+        if (!muteMode) this.powerupSound.play();
     }
     powerDown() {
         this.powerdownSound.currentTime = 0;
-        if(!muteMode) this.powerdownSound.play();
+        if (!muteMode) this.powerdownSound.play();
     }
     shot() {
         this.shootSound.currentTime = 0;
-        if(!muteMode) this.shootSound.play();
+        if (!muteMode) this.shootSound.play();
     }
 }
 
@@ -740,32 +741,33 @@ function start() {
     background.onload = function () {
         // draw the image onto the canvas
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-      
+
         // loop the background music until start button is clicked
         backgroundMusic.addEventListener('ended', function () {
-          this.currentTime = 0;
-          this.play();
+            this.currentTime = 0;
+            this.play();
         }, false);
-      
+
         backgroundMusic.play();
-      
-        document.addEventListener('keydown', function(event) {
-          if (event.key === 'm') {
-            isMute = !isMute;
-            if(!isGameStart) backgroundMusic.muted = isMute;
-            if(isMute){
-                muteMode ='\u{1F507} ';
-            }else{
-                muteMode ='';
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'm') {
+                isMute = !isMute;
+                if (!isGameStart) backgroundMusic.muted = isMute;
+                if (isMute) {
+                    muteMode = '\u{1F507} ';
+                } else {
+                    muteMode = '';
+                }
+                webTitle();
             }
-            webTitle();
-          }
         });
-      };
+    };
 
     playButton.addEventListener('click', () => {
         buttonclickMusic.play();
         playButton.disabled = true;
+        gameName.style.display = 'none';
         playButton.style.display = 'none';
         howtoButton.disabled = true;
         howtoButton.style.display = 'none';
