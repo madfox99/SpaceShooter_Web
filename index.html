@@ -1,72 +1,65 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name = "viewport" content="width=device-width, initial-scale=1.0">
-        <title>Space shooter</title>
-        <link rel = "preconnect" href = "https://fonts.googleapis.com">
-        <link rel = "preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href = "https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel = "stylesheet">
-        <link rel="shortcut icon" href="assets\icon\spaceship.ico">
-        <link rel = "stylesheet" href = "style.css">
-    </head>
-    <body>
-        <canvas id="canvas1"></canvas>
 
-        <!-- Buttons -->
-        <button id="play_button">Play</button>
-        <button id="howto_button">How To</button>
-        <button id="score_button">Score</button>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space shooter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="assets\icon\spaceship.ico">
+    <link rel="stylesheet" href="style.css">
+</head>
 
-        <!-- Shield -->
-        <img id="shield" src="assets/playerShip/shield.png">
+<body>
+    <canvas id="canvas1"></canvas>
+    <!-- Buttons -->
+    <button id="play_button">Play</button>
+    <button id="howto_button">How To</button>
+    <button id="score_button">Score</button>
+    <!-- Shield -->
+    <img id="shield" src="assets/playerShip/shield.png">
+    <!-- Characters -->
+    <img id="playerShip1" src="assets/playerShip/playerShip1.png">
+    <img id="playerShip2" src="assets/playerShip/playerShip2.png">
+    <img id="playerShip3" src="assets/playerShip/playerShip3.png">
+    <img id="playerShip4" src="assets/playerShip/playerShip4.png">
+    <img id="enemy1" src="assets/enemy/enemy1.png">
+    <img id="enemy2" src="assets/enemy/enemy2.png">
+    <img id="enemy3" src="assets/enemy/enemy3.png">
+    <img id="enemy4" src="assets/enemy/enemy4.png">
+    <!-- Meteor -->
+    <img id="meteorBrown1" src="assets/meteor/meteorBrown1.png">
+    <img id="meteorBrown2" src="assets/meteor/meteorBrown2.png">
+    <img id="meteorGrey1" src="assets/meteor/meteorGrey1.png">
+    <!-- Power up -->
+    <img id="boltGold" src="assets/powerUp/boltGold.png">
+    <!-- Props -->
+    <img id="laserBlue01" src="assets/laser/laserBlue01.png">
+    <!-- Environment -->
+    <img id="background" src="assets/background/background.png">
+    <img id="background1" src="assets/background/background1.png">
+    <img id="background2" src="assets/background/background2.png">
+    <img id="background3" src="assets/background/background3.png">
+    <img id="background4" src="assets/background/background4.png">
+    <!-- Explosions -->
+    <img id="smokeExplosion1" src="assets/explosion/smokeExplosion_1.png">
+    <img id="smokeExplosion2" src="assets/explosion/smokeExplosion_2.png">
+    <img id="smokeExplosion3" src="assets/explosion/smokeExplosion_3.png">
+    <img id="fireExplosion" src="assets/explosion/fireExplosion.png">
+    <!-- Sounds -->
+    <audio id="shot" src="assets/sound/shot.wav"></audio>
+    <audio id="powerup" src="assets/sound/powerup.wav"></audio>
+    <audio id="powerdown" src="assets/sound/powerdown.wav"></audio>
+    <audio id="smokeExplosion" src="assets/sound/smokeExplosion.wav"></audio>
+    <audio id="hit" src="assets/sound/hit.wav"></audio>
+    <audio id="shieldSound" src="assets/sound/shield.wav"></audio>
+    <audio id="backgroundmusic" src="assets/sound/backgroundmusic.mp3"></audio>
+    <audio id="buttonclick" src="assets/sound/buttonclick.mp3"></audio>
+    <!-- Script -->
+    <script src="script.js"></script>
+</body>
 
-        <!-- Characters -->
-        <img id="playerShip1" src="assets/playerShip/playerShip1.png">
-        <img id="playerShip2" src="assets/playerShip/playerShip2.png">
-        <img id="playerShip3" src="assets/playerShip/playerShip3.png">
-        <img id="playerShip4" src="assets/playerShip/playerShip4.png">
-        <img id="enemy1" src="assets/enemy/enemy1.png">
-        <img id="enemy2" src="assets/enemy/enemy2.png">
-        <img id="enemy3" src="assets/enemy/enemy3.png">
-        <img id="enemy4" src="assets/enemy/enemy4.png">
-        
-        <!-- Meteor -->
-        <img id="meteorBrown1" src="assets/meteor/meteorBrown1.png">
-        <img id="meteorBrown2" src="assets/meteor/meteorBrown2.png">
-        <img id="meteorGrey1" src="assets/meteor/meteorGrey1.png">
-        
-        <!-- Power up -->
-        <img id="boltGold" src="assets/powerUp/boltGold.png">
-
-        <!-- Props -->
-        <img id="laserBlue01" src="assets/laser/laserBlue01.png">
-
-        <!-- Environment -->
-        <img id="background" src="assets/background/background.png">
-        <img id="background1" src="assets/background/background1.png">
-        <img id="background2" src="assets/background/background2.png">
-        <img id="background3" src="assets/background/background3.png">
-        <img id="background4" src="assets/background/background4.png">
-
-        <!-- Explosions -->
-        <img id="smokeExplosion1" src="assets/explosion/smokeExplosion_1.png">
-        <img id="smokeExplosion2" src="assets/explosion/smokeExplosion_2.png">
-        <img id="smokeExplosion3" src="assets/explosion/smokeExplosion_3.png">
-        <img id="fireExplosion" src="assets/explosion/fireExplosion.png">
-
-        <!-- Sounds -->
-        <audio id="shot" src="assets/sound/shot.wav"></audio>
-        <audio id="powerup" src="assets/sound/powerup.wav"></audio>
-        <audio id="powerdown" src="assets/sound/powerdown.wav"></audio>
-        <audio id="smokeExplosion" src="assets/sound/smokeExplosion.wav"></audio>
-        <audio id="hit" src="assets/sound/hit.wav"></audio>
-        <audio id="shieldSound" src="assets/sound/shield.wav"></audio>
-        <audio id="backgroundmusic" src="assets/sound/backgroundmusic.mp3"></audio>
-        <audio id="buttonclick" src="assets/sound/buttonclick.mp3"></audio>
-
-        <script src="script.js"></script>
-    </body>
-    
 </html>
