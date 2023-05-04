@@ -45,7 +45,12 @@ class SoundController {
         this.powerdownSound = document.getElementById("powerdown");
         this.smokeExplosionSound = document.getElementById("smokeExplosion");
         this.hitSound = document.getElementById("hit");
+        this.shieldSound = document.getElementById("shieldSound");
     }
+    shield(){
+        this.shieldSound.currentTime = 0;
+        this.shieldSound.play();
+    }    
     hit(){
         this.hitSound.currentTime = 0;
         this.hitSound.play();
@@ -65,6 +70,37 @@ class SoundController {
     shot(){
         this.shootSound.currentTime = 0;
         this.shootSound.play();
+    }
+}
+
+class Shield {
+    constructor(game){
+        this.game = game;
+        this.width = this.game.player.width;
+        this.height = this.game.player.height;
+        this.frameX = 0;
+        this.maxFrame = 9;
+        this.image = document.getElementById("shield");
+        this.fps = 10;
+        this.timer = 0;
+        this.interval = 1000/this.fps;    
+    }
+    update(deltaTime){
+        if(this.frameX <= this.maxFrame){
+            if(this.timer > this.interval){
+                this.frameX++;
+                this.timer = 0;
+            }else{
+                this.timer += deltaTime;
+            }
+        }
+    }
+    draw(context){
+        context.drawImage(this.image, this.frameX * this.width, 0, this.width, this.height, this.game.player.x, this.game.player.y, this.width, this.height);
+    }
+    reset(){
+        this.frameX = 0;
+        this.game.sound.shield();
     }
 }
 
@@ -515,6 +551,7 @@ class Game {
         this.input = new InputHandler(this);
         this.ui = new UI(this);
         this.sound = new SoundController();
+        this.shield = new Shield(this);
         this.keys = [];
         this.enemies = [];
         this.explosions = [];
@@ -538,9 +575,10 @@ class Game {
         }
         if(this.gameTime > this.timeLimit){
             this.gameOver = true;
-        }
+        }        
         this.background.update(deltaTime);
         this.player.update(deltaTime);
+        this.shield.update(deltaTime);
         if(this.ammoTimer > this.ammoInterval){
             if(this.ammo < this.maxAmmo){
                 this.ammo++;
@@ -555,6 +593,7 @@ class Game {
             // Check collition with the enemy/powerUp
             if(this.checkCollision(this.player, enemy)){
                 enemy.markedForDeletion = true;
+                this.shield.reset();
                 if(enemy.type === 'boltGold'){
                     this.player.enterPowerUp();
                 }else if(enemy.type === 'meteorBrown1'){
@@ -620,7 +659,8 @@ class Game {
     }
     draw(context){
         this.background.draw(context);
-        this.player.draw(context);            
+        this.player.draw(context);
+        this.shield.draw(context);        
         this.enemies.forEach(enemy => {
             enemy.draw(context);
         });        
