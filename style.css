@@ -23,33 +23,6 @@
   max-height: 100%;
 }
 
-#laserBlue01,
-#shield,
-#fireExplosion,
-#smokeExplosion1,
-#smokeExplosion2,
-#smokeExplosion3,
-#background,
-#start-screen,
-#background1,
-#background2,
-#background3,
-#background4,
-#playerShip1,
-#playerShip2,
-#playerShip3,
-#playerShip4,
-#enemy1,
-#enemy2,
-#enemy3,
-#enemy4,
-#meteorBrown1,
-#meteorBrown2,
-#meteorGrey1,
-#boltGold {
-  display: none;
-}
-
 #background {
   position: absolute;
   top: 0;
@@ -72,12 +45,10 @@
   background-color: transparent;
   color: #fff;
   transition: all 0.2s ease-in-out;
-
-  /* Add the following styles */
   display: inline-block;
   margin-top: -20px;
+  white-space: nowrap;
 }
-
 
 #play_button {
   position: absolute;
@@ -99,8 +70,30 @@
   transition: all 0.2s ease-in-out;
   background-image: linear-gradient(to bottom, #4bb543, #3f9d2f);
 
+  display: inline-block;
+  margin-top: 100px;
+}
 
-  /* Add the following styles */
+#home_button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  padding: 10px 20px;
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-radius: 15px;
+  background-color: #6eb800;
+  color: #fff;
+  border: none;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  background-image: linear-gradient(to bottom, #4bb543, #3f9d2f);
+
   display: inline-block;
   margin-top: 100px;
 }
@@ -125,17 +118,16 @@
   transition: all 0.2s ease-in-out;
   background-image: linear-gradient(to bottom, #0077c2, #005ea6);
 
-  /* Add the following styles */
   display: inline-block;
   margin-left: 160px;
   margin-top: 100px;
+  white-space: nowrap;
 }
 
 #score_button {
   position: absolute;
   top: 50%;
   left: 50%;
-  /* Change this to 61% */
   transform: translate(-50%, -50%);
   z-index: 2;
   padding: 10px 20px;
@@ -152,10 +144,40 @@
   transition: all 0.2s ease-in-out;
   background-image: linear-gradient(to bottom, #ff9800, #f57c00);
 
-  /* Add the following styles */
   display: inline-block;
   margin-left: -160px;
   margin-top: 100px;
+}
+
+#howtoback_button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  padding: 10px 20px;
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-radius: 15px;
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  background-image: linear-gradient(to bottom, #ff4d4d, #d50000);
+
+
+  display: inline-block;
+  margin-top: 200px;
+}
+
+#howtoback_button:hover {
+  transform: translate(-50%, -55%);
+  background-image: linear-gradient(to bottom, #ff3333, #c70000);
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.6);
 }
 
 #score_button:hover {
@@ -174,4 +196,68 @@
   transform: translate(-50%, -55%);
   background-image: linear-gradient(to bottom, #0069c0, #004b8f);
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.6);
+}
+
+#howto_image,
+#gameName,
+#play_button,
+#howto_button,
+#score_button,
+#howtoback_button,
+#laserBlue01,
+#shield,
+#fireExplosion,
+#smokeExplosion1,
+#smokeExplosion2,
+#smokeExplosion3,
+#background,
+#start-screen,
+#background_empty,
+#playerShip1,
+#playerShip2,
+#playerShip3,
+#playerShip4,
+#enemy1,
+#enemy2,
+#enemy3,
+#enemy4,
+#meteorBrown1,
+#meteorBrown2,
+#meteorGrey1,
+#boltGold {
+  display: none;
+}
+
+/* Media query for smaller screens */
+@media only screen and (max-width: 790px) {
+  #gameName {
+    font-size: 40px;
+    margin-top: -10px;
+  }
+  #play_button{
+    font-size: 20px;
+    margin-top: 50px;
+    padding: 5px 20px;
+    border-radius: 10px;
+  }
+  #howtoback_button{
+    font-size: 20px;
+    margin-top: 100px;
+    padding: 5px 20px;
+    border-radius: 10px;
+  }
+  #howto_button{
+    font-size: 20px;
+    margin-top: 50px;
+    margin-left: 110px;
+    padding: 5px 20px;
+    border-radius: 10px;
+  }
+  #score_button{
+    font-size: 20px;
+    margin-top: 50px;
+    margin-left: -105px;
+    padding: 5px 20px;
+    border-radius: 10px;
+  }
 }

@@ -8,7 +8,9 @@ canvas.height = 500;
 const playButton = document.getElementById('play_button');
 const howtoButton = document.getElementById('howto_button');
 const scoreButton = document.getElementById('score_button');
+const howtoback_button = document.getElementById('howtoback_button');
 const buttonclickMusic = document.getElementById('buttonclick');
+
 
 const backgroundMusic = document.getElementById('backgroundmusic');
 
@@ -22,6 +24,8 @@ let isGameStart = false;
 // Solid background
 const background = new Image();
 background.src = document.getElementById('background').src;
+const howto_image = new Image();
+howto_image.src = document.getElementById('howto_image').src;
 
 function webTitle() {
     document.title = muteMode + title + developerMode;
@@ -417,7 +421,7 @@ class Layer {
 class Background {
     constructor(game) {
         this.game = game;
-        this.image1 = document.getElementById('background1');
+        this.image1 = document.getElementById('background_empty');
         this.layer1 = new Layer(this.game, this.image1, 1);
         this.layers = [this.layer1];
     }
@@ -615,32 +619,17 @@ class Game {
                     this.player.enterPowerUp();
                 } else if (enemy.type === 'meteorBrown1') {
                     this.addExplosion(enemy);
-                    if (this.score <= 0 && !this.gameOver) {
-                        this.score = 0;
-                    } else {
-                        this.score -= 6;
-                    }
+                    if(!this.gameOver) this.score -= 6;
                 } else if (enemy.type === 'meteorBrown2') {
                     this.addExplosion(enemy);
-                    if (this.score <= 0 && !this.gameOver) {
-                        this.score = 0;
-                    } else {
-                        this.score -= 8;
-                    }
+                    if(!this.gameOver) this.score -= 8;
                 } else if (enemy.type === 'meteorGrey1') {
                     this.addExplosion(enemy);
-                    if (this.score <= 0 && !this.gameOver) {
-                        this.score = 0;
-                    } else {
-                        this.score -= 10;
-                    }
-                }
+                    if(!this.gameOver) this.score -= 10;
+                }                
+                if(!this.gameOver) this.score -= 5; // For all other enemy ships
+                if (this.score <= 0) this.score = 0;
                 this.addExplosion(enemy);
-                if (this.score <= 0 && !this.gameOver) {
-                    this.score = 0;
-                } else {
-                    this.score -= 5;
-                }
             }
             // Check collition with projectiles
             this.player.projectiles.forEach(projectile => {
@@ -658,10 +647,10 @@ class Game {
                         enemy.markedForDeletion = true;
                         if (!this.gameOver) {
                             this.score += enemy.score;
-                        }
-                        if (this.score > this.winningScore) {
-                            this.gameOver = true;
-                        }
+                        }                        
+                        // if (this.score > this.winningScore) {
+                        //     this.gameOver = true;
+                        // }
                     }
                 }
             });
@@ -737,19 +726,31 @@ function animate(currentTime) {
 
 }
 
+function homePage(){
+    // draw the image onto the canvas
+    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+    // Show buttons
+    gameName.style.display = 'block';
+    playButton.style.display = 'block';
+    playButton.disabled = false;
+    howtoButton.style.display = 'block';
+    howtoButton.disabled = false; 
+    scoreButton.style.display = 'block';       
+    scoreButton.disabled = false;    
+    // Hide buttons
+    howtoback_button.style.display = 'none';
+    howtoback_button.disabled = true;
+}
+
 function start() {
     background.onload = function () {
-        // draw the image onto the canvas
-        ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-
+        homePage();
         // loop the background music until start button is clicked
         backgroundMusic.addEventListener('ended', function () {
             this.currentTime = 0;
             this.play();
         }, false);
-
         backgroundMusic.play();
-
         document.addEventListener('keydown', function (event) {
             if (event.key === 'm') {
                 isMute = !isMute;
@@ -763,7 +764,28 @@ function start() {
             }
         });
     };
-
+    howtoback_button.addEventListener('click', () => {
+        buttonclickMusic.play();
+        homePage();
+    });
+    scoreButton.addEventListener('click', () => {
+        buttonclickMusic.play();
+        gameName.style.display = 'none';
+    });
+    howtoButton.addEventListener('click', () => {
+        buttonclickMusic.play();
+        // Hide items
+        gameName.style.display = 'none';
+        playButton.style.display = 'none';
+        howtoButton.disabled = true;
+        howtoButton.style.display = 'none';
+        scoreButton.disabled = true;
+        scoreButton.style.display = 'none';
+        // Show items
+        ctx.drawImage(howto_image, 0, 0, canvas.width, canvas.height);
+        howtoback_button.style.display = 'block';
+        howtoback_button.disabled = false;
+    });
     playButton.addEventListener('click', () => {
         buttonclickMusic.play();
         playButton.disabled = true;
