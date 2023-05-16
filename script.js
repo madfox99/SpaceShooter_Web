@@ -4,15 +4,22 @@ const ctx = canvas.getContext('2d');
 canvas.width = 1500;
 canvas.height = 500;
 
+// Game object
+let game;
+let lastTime;
+
 // Bottons
 const playButton = document.getElementById('play_button');
 const howtoButton = document.getElementById('howto_button');
-const scoreButton = document.getElementById('score_button');
+// const scoreButton = document.getElementById('score_button');
 const howtoback_button = document.getElementById('howtoback_button');
+const home_button = document.getElementById('home_button');
+const retry_button = document.getElementById('retry_button');
+
+// Sounds
 const buttonclickMusic = document.getElementById('buttonclick');
+let backgroundMusic;
 
-
-const backgroundMusic = document.getElementById('backgroundmusic');
 
 const gameName = document.getElementById('gameName');
 var title = 'Space Shooter';
@@ -20,6 +27,9 @@ var developerMode = '';
 var muteMode = '';
 let isMute = false;
 let isGameStart = false;
+let isHomeButtonClicked = false;
+let isRetryButtonClicked = false;
+let winLooseSound = true;
 
 // Solid background
 const background = new Image();
@@ -67,6 +77,16 @@ class SoundController {
         this.smokeExplosionSound = document.getElementById("smokeExplosion");
         this.hitSound = document.getElementById("hit");
         this.shieldSound = document.getElementById("shieldSound");
+        this.looseSound = document.getElementById('looseSound');
+        this.winSound = document.getElementById('winSound');
+    }
+    playerWin() {
+        this.winSound.currentTime = 0;
+        if (!muteMode) this.winSound.play();
+    }
+    playerLoose() {
+        this.looseSound.currentTime = 0;
+        if (!muteMode) this.looseSound.play();
     }
     shield() {
         this.shieldSound.currentTime = 0;
@@ -586,7 +606,7 @@ class Game {
         this.score = 0;
         this.winningScore = 400; // Winning score
         this.gameTime = 0;
-        this.timeLimit = 90000; // Game time limit => 90 Sec
+        this.timeLimit = 10000; // Game time limit => 90 Sec
         this.speed = 1; // Game speed
         this.debug = false; // Debug mode
     }
@@ -594,8 +614,26 @@ class Game {
         if (!this.gameOver) {
             this.gameTime += deltaTime;
         }
+        // Winning/Loosing sound
         if (this.gameTime > this.timeLimit) {
             this.gameOver = true;
+            if (this.score > this.winningScore) {
+                if(winLooseSound && isGameStart){
+                    this.sound.playerWin(); // Winning sound
+                    winLooseSound = false;
+                }
+            }else {
+                if(winLooseSound && isGameStart){
+                    this.sound.playerLoose(); // Loosing sound
+                    winLooseSound = false;
+                }
+            }
+            // Show home button
+            home_button.style.display = 'block';
+            home_button.disabled = false;
+            // Show retry button
+            retry_button.style.display = 'block';
+            retry_button.disabled = false;
         }
         this.background.update(deltaTime);
         this.player.update(deltaTime);
@@ -712,96 +750,170 @@ class Game {
     }
 }
 
-// Game object
-const game = new Game(canvas.width, canvas.height);
-let lastTime;
-
 function animate(currentTime) {
     const deltaTime = currentTime - lastTime;
     lastTime = currentTime;
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas for looping
     game.update(deltaTime);
     game.draw(ctx);
-    requestAnimationFrame(animate);
-
+    if(isHomeButtonClicked || isRetryButtonClicked){
+        retry_button.style.display = 'none';
+        retry_button.disabled = true;
+        home_button.style.display = 'none';
+        home_button.disabled = true;
+        if(isHomeButtonClicked){            
+            isGameStart = false;
+            homePage();
+        }
+        isHomeButtonClicked = false;
+        isRetryButtonClicked = false;
+    }else{        
+        requestAnimationFrame(animate);         
+    }
 }
 
 function homePage(){
     // draw the image onto the canvas
-    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+    ctx.drawImage(background, 0, 0, canvas.width, canvas.height); // Draw image
     // Show buttons
     gameName.style.display = 'block';
     playButton.style.display = 'block';
     playButton.disabled = false;
     howtoButton.style.display = 'block';
     howtoButton.disabled = false; 
-    scoreButton.style.display = 'block';       
-    scoreButton.disabled = false;    
+    // scoreButton.style.display = 'block';       
+    // scoreButton.disabled = false;    
     // Hide buttons
     howtoback_button.style.display = 'none';
     howtoback_button.disabled = true;
+    home_button.style.display = 'none';
+    home_button.disabled = true;
+    retry_button.style.display = 'none';
+    retry_button.disabled = true;
 }
 
-function start() {
-    background.onload = function () {
-        homePage();
-        // loop the background music until start button is clicked
-        backgroundMusic.addEventListener('ended', function () {
-            this.currentTime = 0;
-            this.play();
-        }, false);
-        backgroundMusic.play();
-        document.addEventListener('keydown', function (event) {
-            if (event.key === 'm') {
-                isMute = !isMute;
-                if (!isGameStart) backgroundMusic.muted = isMute;
-                if (isMute) {
-                    muteMode = '\u{1F507} ';
-                } else {
-                    muteMode = '';
-                }
-                webTitle();
+function m(){
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'm') {
+            isMute = !isMute;
+            if (!isGameStart) backgroundMusic.muted = isMute;
+            if (isMute) {
+                muteMode = '\u{1F507} ';
+            } else {
+                if (!isGameStart) backgroundMusic.play();
+                muteMode = '';
             }
-        });
-    };
+            webTitle();
+        }
+    });
+}
+
+function backgroundSound(){
+    backgroundMusic = document.getElementById('backgroundmusic');
+    // loop the background music until start button is clicked
+    backgroundMusic.addEventListener('ended', function () {
+        this.currentTime = 0;
+        this.play();
+    }, false);
+    if(!isMute) backgroundMusic.play();
+    m(); // Key press event "m"
+}
+
+function defaultButtonSettings(){
+    playButton.disabled = false;
+    playButton.style.display = 'block';
+    howtoButton.disabled = false;
+    howtoButton.style.display = 'block';
+    // scoreButton.disabled = false;
+    // scoreButton.style.display = 'block';
+}
+
+function buttonActionListners(){ 
+    retry_button.addEventListener('click', () => {
+        buttonclickMusic.play(); // Button click sound
+        // Reset variable values    
+        isHomeButtonClicked = false;
+        isGameStart = true;
+        isRetryButtonClicked = true;
+        winLooseSound = true;
+        // Hide buttons
+        home_button.style.display = 'none';
+        home_button.disabled = true;
+        retry_button.style.display = 'none';
+        retry_button.disabled = true;
+        /////////
+        ctx.fillRect(0, 0, canvas.width, canvas.height); // Clear canvas
+        backgroundMusic.pause(); // Remove background music
+        // background.remove(); 
+        lastTime = performance.now(); // Set the initial value for lastTime
+        game = new Game(canvas.width, canvas.height);
+        animate(performance.now()); // Pass the current time   
+    });
+    home_button.addEventListener('click', () => {
+        buttonclickMusic.play(); // Button click sound
+        // Reset variable values    
+        isHomeButtonClicked = true;
+        isGameStart = false;
+        isRetryButtonClicked = false;
+        winLooseSound = true;        
+        // Home page display
+        defaultButtonSettings();
+        homePage();
+        backgroundSound();        
+        m(); // Key press event "m"
+    });
     howtoback_button.addEventListener('click', () => {
-        buttonclickMusic.play();
+        buttonclickMusic.play(); // Button click sound
         homePage();
     });
-    scoreButton.addEventListener('click', () => {
-        buttonclickMusic.play();
-        gameName.style.display = 'none';
-    });
+    // scoreButton.addEventListener('click', () => {
+    //     buttonclickMusic.play(); // Button click sound
+    //     gameName.style.display = 'none';
+    // });
     howtoButton.addEventListener('click', () => {
-        buttonclickMusic.play();
+        buttonclickMusic.play(); // Button click sound
         // Hide items
         gameName.style.display = 'none';
         playButton.style.display = 'none';
         howtoButton.disabled = true;
         howtoButton.style.display = 'none';
-        scoreButton.disabled = true;
-        scoreButton.style.display = 'none';
+        // scoreButton.disabled = true;
+        // scoreButton.style.display = 'none';
         // Show items
         ctx.drawImage(howto_image, 0, 0, canvas.width, canvas.height);
         howtoback_button.style.display = 'block';
         howtoback_button.disabled = false;
     });
     playButton.addEventListener('click', () => {
-        buttonclickMusic.play();
+        buttonclickMusic.play(); // Button click sound
         playButton.disabled = true;
         gameName.style.display = 'none';
         playButton.style.display = 'none';
         howtoButton.disabled = true;
         howtoButton.style.display = 'none';
-        scoreButton.disabled = true;
-        scoreButton.style.display = 'none';
+        // scoreButton.disabled = true;
+        // scoreButton.style.display = 'none';
         isGameStart = true;
+        isHomeButtonClicked = false;
         ctx.fillRect(0, 0, canvas.width, canvas.height); // Clear canvas
-        backgroundMusic.remove();
-        background.remove();
+        backgroundMusic.pause(); // Remove background music
+        // background.remove(); 
         lastTime = performance.now(); // Set the initial value for lastTime
+        game = new Game(canvas.width, canvas.height);
         animate(performance.now()); // Pass the current time        
     });
+}
+
+function start() {
+    background.onload = function () {
+        // Home page display
+        homePage();
+        // Background music
+        backgroundSound();
+        // Action listners for all buttons
+        buttonActionListners();
+    };
 }
 
 start();

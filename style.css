@@ -6,6 +6,10 @@
   src: url('/assets/font/FeVQS0BTqb0h60ACL5k.ttf') format('truetype');
 }
 
+img {
+  background: transparent;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -74,20 +78,22 @@
   margin-top: 100px;
 }
 
+#play_button:hover {
+  transform: translate(-50%, -55%);
+  background-image: linear-gradient(to bottom, #43a047, #388e3c);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.6);
+}
+
 #home_button {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  padding: 10px 20px;
-  font-size: 20px;
-  font-weight: bold;
+  padding: 10px 10px;
   text-transform: uppercase;
-  letter-spacing: 2px;
   border-radius: 15px;
   background-color: #6eb800;
-  color: #fff;
   border: none;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
   cursor: pointer;
@@ -96,6 +102,40 @@
 
   display: inline-block;
   margin-top: 100px;
+  margin-left: -50px;
+}
+
+#home_button:hover {
+  transform: translate(-50%, -55%);
+  background-image: linear-gradient(to bottom, #43a047, #388e3c);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.6);
+}
+
+#retry_button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  padding: 10px 10px;
+  text-transform: uppercase;
+  border-radius: 15px;
+  background-color: #ddb103;
+  border: none;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  background-image: linear-gradient(to bottom, #0077c2, #005ea6);
+
+  display: inline-block;
+  margin-top: 100px;
+  margin-left: 50px;
+}
+
+#retry_button:hover {
+  transform: translate(-50%, -55%);
+  background-image: linear-gradient(to bottom, #0069c0, #004b8f);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.6);
 }
 
 #howto_button {
@@ -124,6 +164,12 @@
   white-space: nowrap;
 }
 
+#howto_button:hover {
+  transform: translate(-50%, -55%);
+  background-image: linear-gradient(to bottom, #0069c0, #004b8f);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.6);
+}
+
 #score_button {
   position: absolute;
   top: 50%;
@@ -149,6 +195,12 @@
   margin-top: 100px;
 }
 
+#score_button:hover {
+  transform: translate(-50%, -55%);
+  background-image: linear-gradient(to bottom, #fb8c00, #ef6c00);
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.6);
+}
+
 #howtoback_button {
   position: absolute;
   top: 50%;
@@ -157,9 +209,7 @@
   z-index: 2;
   padding: 10px 20px;
   font-size: 20px;
-  font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: 2px;
   border-radius: 15px;
   background-color: #e74c3c;
   color: #fff;
@@ -168,7 +218,6 @@
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   background-image: linear-gradient(to bottom, #ff4d4d, #d50000);
-
 
   display: inline-block;
   margin-top: 200px;
@@ -180,25 +229,9 @@
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.6);
 }
 
-#score_button:hover {
-  transform: translate(-50%, -55%);
-  background-image: linear-gradient(to bottom, #fb8c00, #ef6c00);
-  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.6);
-}
-
-#play_button:hover {
-  transform: translate(-50%, -55%);
-  background-image: linear-gradient(to bottom, #43a047, #388e3c);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.6);
-}
-
-#howto_button:hover {
-  transform: translate(-50%, -55%);
-  background-image: linear-gradient(to bottom, #0069c0, #004b8f);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.6);
-}
-
 #howto_image,
+#home_button,
+#retry_button,
 #gameName,
 #play_button,
 #howto_button,
@@ -234,26 +267,30 @@
     font-size: 40px;
     margin-top: -10px;
   }
-  #play_button{
+
+  #play_button {
     font-size: 20px;
     margin-top: 50px;
     padding: 5px 20px;
     border-radius: 10px;
   }
-  #howtoback_button{
+
+  #howtoback_button {
     font-size: 20px;
     margin-top: 100px;
     padding: 5px 20px;
     border-radius: 10px;
   }
-  #howto_button{
+
+  #howto_button {
     font-size: 20px;
     margin-top: 50px;
     margin-left: 110px;
     padding: 5px 20px;
     border-radius: 10px;
   }
-  #score_button{
+
+  #score_button {
     font-size: 20px;
     margin-top: 50px;
     margin-left: -105px;
