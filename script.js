@@ -606,7 +606,7 @@ class Game {
         this.score = 0;
         this.winningScore = 400; // Winning score
         this.gameTime = 0;
-        this.timeLimit = 10000; // Game time limit => 90 Sec
+        this.timeLimit = 90000; // Game time limit => 90 Sec
         this.speed = 1; // Game speed
         this.debug = false; // Debug mode
     }
