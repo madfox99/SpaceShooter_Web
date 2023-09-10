@@ -14,11 +14,14 @@ Space Shooter is an exhilarating space-themed game developed using HTML, CSS, an
 
 1. Clone this repository to your local machine.
 2. Open the `index.html` file in your web browser.
-3. Use the arrow keys to control your spaceship.
-4. Shoot down alien enemies and avoid collisions.
-5. Survive as long as possible and achieve the highest score!
+3. Use the **up arrow** key to move your spaceship up.
+4. Use the **down arrow** key to move your spaceship down.
+5. Press **M** to toggle sound (mute/unmute).
+6. Press the **space bar** to shoot lasers at alien enemies.
+7. Press **D** to enable development mode.
 
-Get ready for an adrenaline-pumping space adventure in Space Shooter!
+Survive as long as possible, shoot down alien enemies, and achieve the highest score in Space Shooter!
+
 
 ## Screenshots
 
